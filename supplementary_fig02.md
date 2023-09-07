@@ -341,3 +341,77 @@ for(i in seq_along(mysamples)){
 ```
 
 ![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-15-1.png)
+
+Lets make this graph a little bit prettier, using
+[ColorBrewer2.org](https://colorbrewer2.org/) for color panels:
+
+``` r
+if(!require(RColorBrewer)){
+  install.packages('RColorBrewer')
+}
+```
+
+    Loading required package: RColorBrewer
+
+``` r
+library(RColorBrewer)
+
+mylabels <- c('AZdye594-PEG1-N-bis(PEG2-Tz)', 
+              'AZdye488-PEG1-N-bis(PEG2-Tz)',
+              'AZdye594-DBCO',
+              'AZdye488-DBCO',
+              'Azido-PEG1-N-bis(PEG2-Tz)')
+
+color <- c(RColorBrewer::brewer.pal(6, 'PuOr')[c(5,1,6,2)], 'black')
+
+scale.factor.y <- 1.2 #adds some space between lines when we stack them on top. 
+text.under.y <- 0.3 #placement of the text label under the trace. 
+text.under.x <- 0.31 #placement of the text label under the trace. 
+
+#normalize values 
+normalize <- function(num_vec){
+  maxnv <- max(num_vec, na.rm = TRUE)
+  md<-num_vec[1]
+  return((num_vec-md) / (maxnv))
+}
+
+#create a new variable 'norm' which normalizes values for each compound
+trace$norm<-with(trace, ave(value, sample, FUN = normalize))
+
+quartz(width=5.5, height=5.6)
+par(mar=c(2,1,0,1))
+plot(trace$time[trace$sample == mysamples[1]], 
+     trace$norm[trace$sample == mysamples[1]], 
+     type='l',
+     xlab='',
+     ylab='',
+     ylim=c(-max(trace$norm)*text.under.y, scale.factor.y^2*max(trace$norm)*length(mysamples)),
+     xlim = c(1, 2.5),
+     axes=FALSE,
+     col=color[1]
+     )
+
+for(i in seq_along(mysamples)){
+  #k is a variable that adds some space for sample 3 and above so the two reactions are vertically seperated from the rest.
+  if(i > 2){
+    k <- 1.5
+  }else{
+    k <- 0
+  }
+  lines(trace$time[trace$sample == mysamples[i]], 
+     trace$norm[trace$sample == mysamples[i]]+scale.factor.y*max(trace$norm)*(i-1)+k, col=color[i])
+  
+  text(max(trace$time)*text.under.x, scale.factor.y*max(trace$norm)*(i-1)-max(trace$norm)*text.under.y+k, mylabels[i], col=color[i], pos=4, cex = 0.8)
+}
+```
+
+![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-16-1.png)
+
+Lets save the figure as a PDF:
+
+``` r
+quartz.save(file='./pdf/S02b.pdf', type='pdf')
+```
+
+    quartz_off_screen 
+                    2 
