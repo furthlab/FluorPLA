@@ -415,3 +415,6 @@ quartz.save(file='./pdf/S02b.pdf', type='pdf')
 
     quartz_off_screen 
                     2 
+
+You can view the PDF here:
+<https://github.com/furthlab/FluorPLA/blob/main/pdf/S02b.pdf>
