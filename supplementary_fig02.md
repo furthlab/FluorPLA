@@ -519,20 +519,30 @@ for(i in seq_along(msSamples) ){
 Plot a figure:
 
 ``` r
+quartz(width=6.8, height=5.4)
 # Set up a 2x1 layout for subplots
 par(mfrow = c(2, 1), mar = c(3, 4, 1, 1))
 
 # Plot the first sample data
 ms.plot(msdata[msdata$sample == 'RXN488',], col = RColorBrewer::brewer.pal(6, 'PuOr')[2])
 # Add label for the first sample
-text(1700, 90, mylabels[2], col = RColorBrewer::brewer.pal(6, 'PuOr')[2])
+text(1600, 90, mylabels[2], col = RColorBrewer::brewer.pal(6, 'PuOr')[2])
 
 # Reset the layout for the second subplot
 par(mar = c(4, 4, 1, 1))
 # Plot the second sample data
 ms.plot(msdata[msdata$sample == 'RXN594',], col = RColorBrewer::brewer.pal(6, 'PuOr')[6])
 # Add label for the second sample
-text(1700, 90, mylabels[1], col = RColorBrewer::brewer.pal(6, 'PuOr')[6])
+text(1600, 90, mylabels[1], col = RColorBrewer::brewer.pal(6, 'PuOr')[6])
 ```
 
 ![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-23-1.png)
+
+Lets save the figure as a PDF:
+
+``` r
+quartz.save(file='./pdf/S02c.pdf', type='pdf')
+```
+
+    quartz_off_screen 
+                    2 
