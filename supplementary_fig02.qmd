@@ -294,7 +294,7 @@ ms.plot <- function(x, xlim=c(500, 2000), main = '', col='black'){
 
 Lets try it:
 ```{r}
-ms.plot(msdata[msdata$sample=='RXN594',])
+ms.plot(msdata[msdata$sample=='Azido',])
 ``` 
 
 Then lets plot all the samples on one row each:

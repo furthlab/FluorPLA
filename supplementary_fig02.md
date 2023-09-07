@@ -499,7 +499,7 @@ ms.plot <- function(x, xlim=c(500, 2000), main = '', col='black'){
 Lets try it:
 
 ``` r
-ms.plot(msdata[msdata$sample=='RXN594',])
+ms.plot(msdata[msdata$sample=='Azido',])
 ```
 
 ![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-21-1.png)
