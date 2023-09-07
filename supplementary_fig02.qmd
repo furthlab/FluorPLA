@@ -292,6 +292,11 @@ ms.plot <- function(x, xlim=c(500, 2000), main = '', col='black'){
 }
 ```
 
+Lets try it:
+```{r}
+ms.plot(msdata[msdata$sample=='RXN594',])
+``` 
+
 Then lets plot all the samples on one row each:
 ```{r}
 msSamples <- unique(msdata$sample)

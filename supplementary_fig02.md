@@ -496,6 +496,14 @@ ms.plot <- function(x, xlim=c(500, 2000), main = '', col='black'){
 }
 ```
 
+Lets try it:
+
+``` r
+ms.plot(msdata[msdata$sample=='RXN594',])
+```
+
+![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-21-1.png)
+
 Then lets plot all the samples on one row each:
 
 ``` r
@@ -506,4 +514,4 @@ for(i in seq_along(msSamples) ){
 }
 ```
 
-![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-21-1.png)
+![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-22-1.png)
