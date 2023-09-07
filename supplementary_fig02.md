@@ -418,3 +418,92 @@ quartz.save(file='./pdf/S02b.pdf', type='pdf')
 
 You can view the PDF here:
 <https://github.com/furthlab/FluorPLA/blob/main/pdf/S02b.pdf>
+
+# Same for MS data
+
+Row 44 here has the `Raw data:` tag. Unfortuantely the header contains
+some illegal characters for R to import it straightforward with the
+`read.table()` command. We will get the error:
+
+``` r
+tmp<-read.table("./data/lc/Azido_PEG_tetrazine_MS.txt", skip=44, header=TRUE)
+```
+
+    Error in scan(file = file, what = what, sep = sep, quote = quote, dec = dec, : line 1 did not have 7 elements
+
+So instead we will skip the header column name line and import directly
+from line 45 and add the variable names manually:
+
+``` r
+#create an empty data frame where we will store our data
+msdata<-data.frame(mass.mz = character(), intensity = integer(), intensity.perc = numeric())
+
+#loop through each MS file and load it in and add it to msdata data frame
+for(i in which(myfiles$ms)){
+  tmp<-read.table(myfiles$path[i], skip=45, header=FALSE)
+  
+  msdata.tmp<-data.frame(
+                        sample = myfiles$sample[i], 
+                        mass.mz = tmp[,1], 
+                        intensity = tmp[,2],
+                        intensity.perc = tmp[,3]
+                        )
+  
+  #add the just loaded file into master data frame, msdata
+  msdata <- rbind(msdata, msdata.tmp)
+}
+```
+
+Lets make a mass spec plot function:
+
+``` r
+#' Create a Mass Spectrometry Plot
+#'
+#' Generates a mass spectrometry plot to visualize mass-to-charge ratio (m/z) and intensity percentage.
+#'
+#' @param x A data frame containing two columns: 'mass.mz' for mass-to-charge ratio and 'intensity.perc' for intensity percentage.
+#' @param xlim A numeric vector of length 2, specifying the x-axis limits for the plot.
+#' @param main Title of the plot.
+#' @param col The color for the lines in the plot.
+#' 
+#' @details This function plots mass spectrometry data, where 'mass.mz' represents the mass-to-charge ratio (m/z)
+#'          and 'intensity.perc' represents the intensity percentage.
+#'
+#' @examples
+#' # Sample data frame 'ms_data'
+#' ms_data <- data.frame(mass.mz = c(600, 700, 800, 900),
+#'                       intensity.perc = c(10, 30, 60, 40))
+#'
+#' # Create a mass spectrometry plot
+#' ms.plot(ms_data, xlim = c(500, 1000), col = 'blue')
+#'
+#' @seealso \code{\link{plot}}, \code{\link{axis}}, \code{\link{lines}}
+#'
+#' @return NULL (a plot is displayed)
+#'
+#' @author Daniel Fürth
+#'
+#' @export
+ms.plot <- function(x, xlim=c(500, 2000), main = '', col='black'){
+  par(yaxs='i', xaxs='i')
+  plot(x$mass.mz, x$intensity.perc, type='n', xlim=xlim, xlab='m/z', ylab='%', axes=F)
+  title(main = main, col.main = col)
+
+  axis(1, at=seq(xlim[1], xlim[2], length.out=7))
+  axis(2, at=c(0,25,50,75,100), las=1)
+  
+  lin<-lapply(seq_along(x$mass.mz), function(l){lines(rep(x$mass.mz[l],2), c(x$intensity.perc[l], 0), col=col )})
+}
+```
+
+Then lets plot all the samples on one row each:
+
+``` r
+msSamples <- unique(msdata$sample)
+par(mfrow=c(ceiling(length(msSamples)/2), 2))
+for(i in seq_along(msSamples) ){
+  ms.plot(msdata[msdata$sample==msSamples[i],], main=msSamples[i], col=i)
+}
+```
+
+![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-21-1.png)
