@@ -546,3 +546,33 @@ quartz.save(file='./pdf/S02c.pdf', type='pdf')
 
     quartz_off_screen 
                     2 
+
+# Bargraph of TFP-ester labeling gels
+
+``` r
+gel <- read.table('./data/gels/csv/2023-09-07_chickenAlexa488.csv', header = TRUE, sep = ',')
+
+refDOL <- 5 #ThermoFisher A21200
+
+gel$norm <- (gel$Mean/gel$Mean[1])*refDOL
+
+quartz(width=3.6, height=6.1)
+
+par(mar=c(6,4,1,0))
+bar <- barplot(gel$norm, ylab='Degree of Labeling (DOL)', las=1, xaxt="n")
+labs <- c('Chicken-Alexa488', '1:3', '1:9', '1:15')
+text(cex=1, x=c(bar[1]-.55, bar[-1]), y=c(-0.8,rep(-0.4,3)), labs, xpd=TRUE, srt=45)
+text(mean(bar[-1]), -1.1, 'Goat-PEG4-TCO\nAZdye488-bis(PEG2-Tz)', xpd=TRUE)
+lines(c(bar[2]-.25, bar[4]+.25), rep(-0.75, 2), xpd = TRUE)
+```
+
+![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-25-1.png)
+
+Save as PDF:
+
+``` r
+quartz.save(file='./pdf/S02f.pdf', type='pdf')
+```
+
+    quartz_off_screen 
+                    2 
