@@ -1,5 +1,17 @@
 # supplementary_fig02
-Daniel Fürth
+Daniel Fürth <br><br>Table of Contents:
+
+- [Create a table of raw data files](#create-a-table-of-raw-data-files)
+- [Import the data](#import-the-data)
+- [Make a master data frame with all
+  data.](#make-a-master-data-frame-with-all-data.)
+- [Make a plot](#make-a-plot)
+- [Same for MS data](#same-for-ms-data)
+  - [Peak-detection and annotation in
+    MS](#peak-detection-and-annotation-in-ms)
+- [Bargraph of TFP-ester labeling
+  gels](#bargraph-of-tfp-ester-labeling-gels)
+- [Absorption spectrum](#absorption-spectrum)
 
 ## Create a table of raw data files
 
@@ -504,6 +516,57 @@ ms.plot(msdata[msdata$sample=='Azido',])
 
 ![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-21-1.png)
 
+Nice. Now we also need to add peak-detection to it. We will use the
+package
+[MassSpecWavelet](https://rdrr.io/bioc/MassSpecWavelet/man/MassSpecWavelet.package.html).
+
+## Peak-detection and annotation in MS
+
+``` r
+#check if devtools is installed. It is used to
+if(!require(devtools)){
+  install.packages('devtools')
+}
+```
+
+    Loading required package: devtools
+
+    Loading required package: usethis
+
+``` r
+library(devtools)
+
+#check if MassSpecWavelet is installed, it is used to call peaks in MS data.
+if(!require(MassSpecWavelet)){
+  devtools::install_github('https://github.com/zeehio/MassSpecWavelet')
+}
+```
+
+    Loading required package: MassSpecWavelet
+
+``` r
+library(MassSpecWavelet)
+
+peakInfo <- peakDetectionCWT(msdata[msdata$sample=='Azido',]$intensity, SNR.Th=3)
+majorPeakInfo <- peakInfo$majorPeakInfo
+peakIndex <- majorPeakInfo$peakIndex
+
+
+ms.plot(msdata[msdata$sample=='Azido',])
+
+xpos <-msdata[msdata$sample=='Azido',]$mass.mz[peakIndex]
+ypos <- msdata[msdata$sample=='Azido',]$intensity.perc[peakIndex]
+
+points(xpos, ypos, col='red', pch=21, xpd=TRUE)
+
+#pos=3 will print the label above the point, 1 = under, 2 = left, 4 = right.
+text(xpos, ypos, round(xpos,2), pos=3, xpd=TRUE)
+```
+
+![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-22-1.png)
+
+S lets add this to out function:
+
 Then lets plot all the samples on one row each:
 
 ``` r
@@ -514,7 +577,7 @@ for(i in seq_along(msSamples) ){
 }
 ```
 
-![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-22-1.png)
+![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-24-1.png)
 
 Plot a figure:
 
@@ -536,7 +599,7 @@ ms.plot(msdata[msdata$sample == 'RXN594',], col = RColorBrewer::brewer.pal(6, 'P
 text(1300, 90, mylabels[1], col = RColorBrewer::brewer.pal(6, 'PuOr')[6])
 ```
 
-![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-23-1.png)
+![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-25-1.png)
 
 Lets save the figure as a PDF:
 
@@ -566,7 +629,7 @@ text(mean(bar[-1]), -1.1, 'Goat-PEG4-TCO\nAZdye488-bis(PEG2-Tz)', xpd=TRUE)
 lines(c(bar[2]-.25, bar[4]+.25), rep(-0.75, 2), xpd = TRUE)
 ```
 
-![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-25-1.png)
+![](supplementary_fig02_files/figure-commonmark/unnamed-chunk-27-1.png)
 
 Save as PDF:
 
@@ -576,3 +639,5 @@ quartz.save(file='./pdf/S02f.pdf', type='pdf')
 
     quartz_off_screen 
                     2 
+
+# Absorption spectrum

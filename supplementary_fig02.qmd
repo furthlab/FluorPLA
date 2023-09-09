@@ -1,7 +1,8 @@
 ---
 title: "supplementary_fig02"
-author: "Daniel Fürth"
+author: "Daniel Fürth <br><br>Table of Contents:"
 format: gfm
+toc: true
 ---
 
 ## Create a table of raw data files
@@ -296,6 +297,44 @@ Lets try it:
 ```{r}
 ms.plot(msdata[msdata$sample=='Azido',])
 ``` 
+Nice. Now we also need to add peak-detection to it. We will use the package [MassSpecWavelet](https://rdrr.io/bioc/MassSpecWavelet/man/MassSpecWavelet.package.html).
+
+## Peak-detection and annotation in MS
+
+```{r}
+#check if devtools is installed. It is used to
+if(!require(devtools)){
+  install.packages('devtools')
+}
+library(devtools)
+
+#check if MassSpecWavelet is installed, it is used to call peaks in MS data.
+if(!require(MassSpecWavelet)){
+  devtools::install_github('https://github.com/zeehio/MassSpecWavelet')
+}
+library(MassSpecWavelet)
+
+peakInfo <- peakDetectionCWT(msdata[msdata$sample=='Azido',]$intensity, SNR.Th=3)
+majorPeakInfo <- peakInfo$majorPeakInfo
+peakIndex <- majorPeakInfo$peakIndex
+
+
+ms.plot(msdata[msdata$sample=='Azido',])
+
+xpos <-msdata[msdata$sample=='Azido',]$mass.mz[peakIndex]
+ypos <- msdata[msdata$sample=='Azido',]$intensity.perc[peakIndex]
+
+points(xpos, ypos, col='red', pch=21, xpd=TRUE)
+
+#pos=3 will print the label above the point, 1 = under, 2 = left, 4 = right.
+text(xpos, ypos, round(xpos,2), pos=3, xpd=TRUE)
+``` 
+
+S lets add this to out function:
+
+```{r}
+``` 
+
 
 Then lets plot all the samples on one row each:
 ```{r}
@@ -355,3 +394,6 @@ Save as PDF:
 ```{r}
 quartz.save(file='./pdf/S02f.pdf', type='pdf')
 ``` 
+
+# Absorption spectrum
+
