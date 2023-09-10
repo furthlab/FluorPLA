@@ -373,17 +373,24 @@ quartz.save(file='./pdf/S02c.pdf', type='pdf')
 # Bargraph of TFP-ester labeling gels
 
 ```{r}
-gel <- read.table('./data/gels/csv/2023-09-07_chickenAlexa488.csv', header = TRUE, sep = ',')
+gel <- read.table('./data/gels/csv/2023-09-08_GoatAlexa488.csv', header = TRUE, sep = ',')
 
 refDOL <- 5 #ThermoFisher A21200
 
 gel$norm <- (gel$Mean/gel$Mean[1])*refDOL
 
+gel$norm[5:8] <- (gel$Mean[5:8]/gel$Mean[5])*refDOL
+
+#add a character to the name to get alphabetical ordering of the groups we want in the plot
+gel$sample <- rep( c('A Goat-Alexa488', 'B 1:3', 'C 1:9', 'D 1:15') , 2)
+
+avg<-tapply(gel$norm, gel$sample, mean)
+
 quartz(width=3.6, height=6.1)
 
 par(mar=c(6,4,1,0))
-bar <- barplot(gel$norm, ylab='Degree of Labeling (DOL)', las=1, xaxt="n")
-labs <- c('Chicken-Alexa488', '1:3', '1:9', '1:15')
+bar <- barplot(avg, ylab='Degree of Labeling (DOL)', las=1, xaxt="n")
+labs <- c('Goat-Alexa488', '1:3', '1:9', '1:15')
 text(cex=1, x=c(bar[1]-.55, bar[-1]), y=c(-0.8,rep(-0.4,3)), labs, xpd=TRUE, srt=45)
 text(mean(bar[-1]), -1.1, 'Goat-PEG4-TCO\nAZdye488-bis(PEG2-Tz)', xpd=TRUE)
 lines(c(bar[2]-.25, bar[4]+.25), rep(-0.75, 2), xpd = TRUE)
@@ -397,3 +404,100 @@ quartz.save(file='./pdf/S02f.pdf', type='pdf')
 
 # Absorption spectrum
 
+The output from the spectrophotometer is a CSV file. 
+Values are read in as character strings so we have to recast to numeric.
+Data starts from column 26 and each row is a sample.
+```{r}
+spec <- read.table('data/spectra/absorption.csv', sep=',', header=TRUE)
+
+ex <- data.frame(sample = character(), wavelength = integer(), absorbance = numeric())
+
+for(i in 1:nrow(spec)){
+  ex.tmp <- data.frame(sample = spec$Sample.Name[i], wavelength = as.integer( substr(names(spec[,26:ncol(spec)]), 2,4) ), absorbance = as.numeric(spec[i,26:ncol(spec)]) )
+
+  ex <-rbind(ex, ex.tmp)
+}
+
+
+
+# Subset the data frame and remove rows with wavelength under 450
+ex <- rbind(subset(ex, sample %in%  unique(ex$sample)[c(1, 2)] & wavelength >= 380 & wavelength < 675) , 
+                     subset(ex, sample %in%  unique(ex$sample)[c(3, 4)] & wavelength >= 450 & wavelength < 675) )
+
+
+
+ex$absorbance[ex$sample %in% c(unique(ex$sample)[c(1,2)])]<-ex$absorbance[ex$sample %in% c(unique(ex$sample)[c(1,2)])]/max(ex$absorbance[ex$sample %in% c(unique(ex$sample)[c(1,2)])])
+
+ex$absorbance[ex$sample %in% c(unique(ex$sample)[c(3,4)])]<-ex$absorbance[ex$sample %in% c(unique(ex$sample)[c(3,4)])]/max(ex$absorbance[ex$sample %in% c(unique(ex$sample)[c(3,4)])])
+
+par(yaxs='i', xaxs='i')
+plot(ex$wavelength, ex$absorbance, type='n', ylab='Absorbance (AU)', xlab = 'Wavelength', las=1, xlim=c(380, 700), ylim=c(0,1), axes=F)
+
+color <- c('green3', 'green4', 'red', 'red4')
+unique_samples <- unique(ex$sample)
+# Loop through each unique sample and create a polygon plot
+for (sample_name in unique_samples) {
+  # Subset the data for the current sample
+  sample_data <- ex[ex$sample == sample_name, ]
+  
+  # Create a polygon plot for the current sample
+  polygon(c(sample_data$wavelength, 
+            sample_data$wavelength[nrow(sample_data)], 
+            sample_data$wavelength[1],
+            sample_data$wavelength[1]), 
+          
+          c(sample_data$absorbance, 0, 0, sample_data$absorbance[1]), 
+          col = color[match(sample_name, unique_samples)],
+          border = "black")
+  
+  # Add a legend for sample names
+  legend("topright", legend = unique_samples, fill = color)
+}
+```
+
+Change colors and make a figure with correct dimensions to fit in the larger figure layout:
+
+```{r}
+col2hex <- function(cname)
+  {
+    colMat <- col2rgb(cname)
+    rgb(
+        red=colMat[1,]/255,
+        green=colMat[2,]/255,
+        blue=colMat[3,]/255
+        )
+}
+
+quartz(width= 16, height=4.8)
+par(yaxs='i', xaxs='i')
+plot(ex$wavelength, ex$absorbance, type='n', ylab='Absorbance (AU)', xlab = 'Wavelength (nm)', las=1, xlim=c(380, 700), ylim=c(0,1), axes=F)
+
+color <- c('green3', 'green4', 'red', 'red4')
+unique_samples <- unique(ex$sample)
+
+peak.max <- numeric()
+# Loop through each unique sample and create a polygon plot
+for (sample_name in unique_samples) {
+  # Subset the data for the current sample
+  sample_data <- ex[ex$sample == sample_name, ]
+  
+  # Create a polygon plot for the current sample
+  polygon(c(sample_data$wavelength, 
+            sample_data$wavelength[nrow(sample_data)], 
+            sample_data$wavelength[1],
+            sample_data$wavelength[1]), 
+          
+          c(sample_data$absorbance, 0, 0, sample_data$absorbance[1]), 
+          col = paste0( col2hex( color[match(sample_name, unique_samples)] ), '70' ),
+          border = color[match(sample_name, unique_samples)], lwd=2, xpd=TRUE )
+  
+  # Add a legend for sample names
+  legend("topright", legend = unique_samples, fill = color)
+  
+  peak.max <- c(peak.max, sample_data$wavelength[which.max(sample_data$absorbance)] )
+}
+axis(1)
+axis(2, las=1, at=c(0,0.5,1))
+
+quartz.save(file="pdf/S02b_excitation.pdf", type='pdf')
+``` 
