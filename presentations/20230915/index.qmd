@@ -1,0 +1,84 @@
+---
+title: "Progress"
+subtitle: "**Daniel Fürth**<br> Assistant professor<br> SciLifeLab/Uppsala University<br><br>🔗 [furthlab.xyz](https://furthlab.xyz)<br>[{{< fa brands twitter size=1xl >}} @furthlab](https://furthlab.xyz)"
+format:
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    logo: ../assets/img/SciLifeLab_Logotype_Green_POS.png
+    css: styles.css
+    footer: Friday 15 Sep
+    height: 1048
+    width: 1600
+resources:
+  - demo.pdf
+---
+
+## <span style="font-size: 0.7em;">📚🙇🏽‍♀️🙇🏻‍♂️📖 Agenda </span>
+
+<style>
+  .sm {
+  font-size: 0.75em;
+  }
+    .sm2 {
+  font-size: 0.5em;
+  }
+</style>
+
+::: {.sm}
+::: incremental
+Topics for today:
+
+- **🧬 FluoroProx probes**:
+  - Status figures.
+    - Figure 01
+    - Supplementary Figure 1
+    - Figure 2?
+    - Supplementary Figure 2
+-  **🧬 Photolitography:**
+    - New synthesis route
+    - Janelia Dyes?
+    - 2photon microscope  
+:::
+:::
+
+::: footer
+:::
+
+# FluoroProx probes - _fig. 1_
+<img src="../assets/img/fig01_cMycMax.jpg">
+
+# FluoroProx probes - _Supp.fig. 1_
+<img src="../assets/img/fig_S01_synthesis.png">
+
+# FluoroProx probes - _Fig. 2_ ?
+<img src="../assets/img/EMSA.png">
+
+- [Recombinant human c-Myc protein (Active) (ab169901)](https://www.abcam.com/products/proteins-peptides/recombinant-human-c-myc-protein-active-ab169901.html)
+- [Recombinant Human MAX protein (ab95309)](https://www.abcam.com/products/proteins-peptides/recombinant-human-max-protein-ab95309.html)
+
+Oligonucleotide:
+`GATCAGTTGACCACGTGGTCTGGG`
+
+Suggestion: `/56-FAM/GATCAGTTGACCACGTGGTCTGGG/3AmMO/`
+
+- [5' 6-FAM (Fluorescein) `/56-FAM/`](https://eu.idtdna.com/site/catalog/modifications/product/1108)
+- [3' Amino Modifier `/3AmMO/`](https://eu.idtdna.com/site/catalog/modifications/product/3299)
+
+# Cleavable biotin linkers
+
+[PC-Biotin-PEG4-NHS carbonate](https://broadpharm.com/product/bp-23108)
+
+<img src="https://broadpharm.com/web/images/mol_images/BP-23108.gif" width=50%>
+
+[Disulfide Biotin Alkyne](https://broadpharm.com/product/bp-40312)
+
+<img src="https://broadpharm.com/web/images/mol_images/BP-40312.gif" width=80%>
+
+# FluoroProx probes - _Supp.Fig. 2_
+
+# New synthesis route
+
+<img src="../assets/img/new_synthesis.png">
