@@ -1,12 +1,10 @@
----
-title: "figure01"
-format: gfm
-toc: true
----
+# figure01
+
+- [Emission plot](#emission-plot)
 
 ## Emission plot
 
-```{r}
+``` r
 files<-dir('data/spectra/emission', full.names = TRUE)
 
 spectra<-read.table(files[1], sep='\t')
@@ -41,10 +39,29 @@ for(i in unique(spectra$sample)){
 
 
 library(dplyr)
+```
+
+
+    Attaching package: 'dplyr'
+
+    The following objects are masked from 'package:stats':
+
+        filter, lag
+
+    The following objects are masked from 'package:base':
+
+        intersect, setdiff, setequal, union
+
+``` r
 spec<- spectra %>% 
   group_by(fluor, status, V3) %>% 
   summarise(emission=mean(V4))
+```
 
+    `summarise()` has grouped output by 'fluor', 'status'. You can override using
+    the `.groups` argument.
+
+``` r
 spec$emission[spec$fluor == 488]<-spec$emission[spec$fluor == 488]/max(spec$emission[spec$fluor == 488 & spec$status == 'fluor'])
 spec$emission[spec$fluor == 594]<-spec$emission[spec$fluor == 594]/max(spec$emission[spec$fluor == 594 & spec$status == 'fluor'])
 
@@ -95,23 +112,40 @@ for (sample_name in unique_samples) {
 }
 
 axis(1, at=seq(300,800,by=50))
-
 ```
+
+![](figure01_files/figure-commonmark/unnamed-chunk-1-1.png)
 
 Save the plot.
 
-```{r}
+``` r
 quartz.save(file="pdf/figure01_c.pdf", type='pdf')
 ```
 
-Then compute quench ratio:
-```{r}
-quench.ratio <- spec %>% group_by(fluor, status) %>% summarise(max(emission))
+    quartz_off_screen 
+                    2 
 
+Then compute quench ratio:
+
+``` r
+quench.ratio <- spec %>% group_by(fluor, status) %>% summarise(max(emission))
+```
+
+    `summarise()` has grouped output by 'fluor'. You can override using the
+    `.groups` argument.
+
+``` r
 AZdye488<-quench.ratio$`max(emission)`[1]/quench.ratio$`max(emission)`[2]
 
 AZdye594<-quench.ratio$`max(emission)`[3]/quench.ratio$`max(emission)`[4]
 
 round(AZdye488, 2)
+```
+
+    [1] 5.74
+
+``` r
 round(AZdye594, 2)
 ```
+
+    [1] 2.88
