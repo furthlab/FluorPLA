@@ -23,6 +23,9 @@
 # RStudio files
 .Rproj.user/
 
+/training_data/dapi/images/*.tif
+/training_data/dapi/masks/*.tif
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf

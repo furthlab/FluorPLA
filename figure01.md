@@ -2,6 +2,11 @@
 Daniel Fürth <br><br>Table of Contents:
 
 - [Emission plot Fig. 1c](#emission-plot-fig.-1c)
+- [DAPI nuclei cell segmentation in
+  2D.](#dapi-nuclei-cell-segmentation-in-2d.)
+  - [Installation](#installation)
+  - [Segmentation training](#segmentation-training)
+  - [Prediction](#prediction)
 
 ## Emission plot Fig. 1c
 
@@ -152,3 +157,110 @@ round(AZdye594, 2)
 ```
 
     [1] 2.88
+
+## DAPI nuclei cell segmentation in 2D.
+
+### Installation
+
+Make sure you have `conda` installed. Create a new conda environment:
+
+```
+conda create --name cellseg2D-env
+conda activate cellseg2D-env
+conda install -c conda-forge napari   
+conda install opencv
+```
+
+Install Tensorflow for macOS M1/M2:
+
+```
+pip install tensorflow-macos
+pip install tensorflow-metal
+```
+
+Install stardist for cell nuclei segmentation:
+
+```
+pip install gputools
+pip install stardist
+pip install csbdeep
+```
+
+### Segmentation training
+
+#### Augment training data set
+
+```
+python augment.py
+```
+
+This expands images_org and masks_org into images (input) and masks
+(ground truth). Input and ground truth are matched based on file name.
+Format is 8-bit monochrome TIF on both.
+
+If more than 255 cells needs to be segmented within a single image you
+can simply change mask format to 16-bit.
+
+#### Perform training
+
+```
+python train_nuclei.py
+```
+
+Open up tensorboard to follow the results:
+
+```
+tensorboard --logdir=.
+```
+
+![Tensorboard lets you monitor the training of the neural
+network](./repo_img/tensorboard.png)
+
+Click the **images** tab of the Tensorboard to inspect the visual output
+of the training. This is in the beginning: ![inspect the
+output](./repo_img/tensorboard_img.png)
+
+Here:
+
+- `net_input` is the input images. Notice a cell is only really present
+  in the first out of three.
+- `net_output0` is the current output from the network.
+- `net_target0` is the ground truth (what the network ideally should
+  have generated).
+
+### Prediction
+
+We have a script we can apply to any image for prediction.
+
+```
+python predict_nuclei.py 
+```
+
+<div id="fig-dapi">
+
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><div width="50.0%"
+data-layout-align="center">
+<p><img src="./repo_img/example_image.jpg" id="fig-input"
+data-ref-parent="fig-dapi" data-fig.extended="false"
+alt="(a) input" /></p>
+</div></td>
+<td style="text-align: center;"><div width="50.0%"
+data-layout-align="center">
+<p><img src="./repo_img/example_labels.jpg" id="fig-output"
+data-ref-parent="fig-dapi" data-fig.extended="false"
+alt="(b) output" /></p>
+</div></td>
+</tr>
+</tbody>
+</table>
+
+Figure 1: Segmentation results.
+
+</div>

@@ -118,3 +118,84 @@ AZdye594<-quench.ratio$`max(emission)`[3]/quench.ratio$`max(emission)`[4]
 round(AZdye488, 2)
 round(AZdye594, 2)
 ```
+
+## DAPI nuclei cell segmentation in 2D.
+
+### Installation
+
+Make sure you have `conda` installed.
+Create a new conda environment:
+```{eval=FALSE}
+conda create --name cellseg2D-env
+conda activate cellseg2D-env
+conda install -c conda-forge napari   
+conda install opencv
+```
+
+Install Tensorflow for macOS M1/M2:
+```{eval=FALSE}
+pip install tensorflow-macos
+pip install tensorflow-metal
+```
+
+Install stardist for cell nuclei segmentation:
+```{eval=FALSE}
+pip install gputools
+pip install stardist
+pip install csbdeep
+```
+
+### Segmentation training
+
+#### Augment training data set
+
+```{eval=FALSE}
+python augment.py
+```
+
+This expands images_org and masks_org into images (input) and masks (ground truth). Input and ground truth are matched based on file name. Format is 8-bit monochrome TIF on both.
+
+If more than 255 cells needs to be segmented within a single image you can simply change mask format to 16-bit.
+
+#### Perform training
+
+```{eval=FALSE}
+python train_nuclei.py
+```
+
+Open up tensorboard to follow the results:
+```{eval=FALSE}
+tensorboard --logdir=.
+```
+
+
+
+![Tensorboard lets you monitor the training of the neural network](./repo_img/tensorboard.png)
+
+
+Click the **images** tab of the Tensorboard to inspect the visual output of the training.
+This is in the beginning:
+![inspect the output](./repo_img/tensorboard_img.png)
+
+Here:
+
+- `net_input` is the input images. Notice a cell is only really present in the first out of three.
+- `net_output0` is the current output from the network.
+- `net_target0` is the ground truth (what the network ideally should have generated).
+
+### Prediction
+
+We have a script we can apply to any image for prediction.
+
+```{eval=FALSE}
+python predict_nuclei.py 
+```
+
+::: {#fig-dapi layout-ncol=2}
+
+![input](./repo_img/example_image.jpg){#fig-input}
+
+![output](./repo_img/example_labels.jpg){#fig-output}
+
+Segmentation results.
+:::
