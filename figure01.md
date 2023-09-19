@@ -217,10 +217,34 @@ tensorboard --logdir=.
 network](./repo_img/tensorboard.png)
 
 Click the **images** tab of the Tensorboard to inspect the visual output
-of the training. This is in the beginning: ![inspect the
-output](./repo_img/tensorboard_img.png)
+of the training.
 
-Here:
+<div id="fig-training">
+
+<table style="width:50%;">
+<colgroup>
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><div width="50.0%"
+data-layout-align="center">
+<p><img src="./repo_img/tensorboard_img.png" id="fig-begin"
+style="width:40.0%" alt="begin" /> <img
+src="./repo_img/tensorboard_later.png" id="fig-later"
+style="width:40.0%" alt="later" /></p>
+</div></td>
+</tr>
+</tbody>
+</table>
+
+Figure 1: Training monitoring. Left is in the beginning right is later
+during training. Top row is input, middle is output of network and
+bottom is the reference (what the network should aim for).
+
+</div>
+
+In detail:
 
 - `net_input` is the input images. Notice a cell is only really present
   in the first out of three.
@@ -261,6 +285,6 @@ alt="(b) output" /></p>
 </tbody>
 </table>
 
-Figure 1: Segmentation results.
+Figure 2: Segmentation results.
 
 </div>

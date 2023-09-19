@@ -174,10 +174,16 @@ tensorboard --logdir=.
 
 
 Click the **images** tab of the Tensorboard to inspect the visual output of the training.
-This is in the beginning:
-![inspect the output](./repo_img/tensorboard_img.png)
 
-Here:
+
+::: {#fig-training layout-ncol=2}
+![begin](./repo_img/tensorboard_img.png){#fig-begin width=40%}
+![later](./repo_img/tensorboard_later.png){#fig-later width=40%} 
+
+Training monitoring. Left is in the beginning right is later during training. Top row is input, middle is output of network and bottom is the reference (what the network should aim for).
+:::
+
+In detail:
 
 - `net_input` is the input images. Notice a cell is only really present in the first out of three.
 - `net_output0` is the current output from the network.

@@ -14,7 +14,7 @@ os.makedirs(mask_folder, exist_ok=True)
 os.makedirs(images_folder, exist_ok=True)
 
 # Set the ROI size and step
-roi_size = (256, 256)
+roi_size = (512, 512)
 roi_step = 128
 
 # Get the list of file names in the mask_org folder
