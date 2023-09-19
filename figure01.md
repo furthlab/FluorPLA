@@ -1,8 +1,9 @@
 # figure01
+Daniel Fürth <br><br>Table of Contents:
 
-- [Emission plot](#emission-plot)
+- [Emission plot Fig. 1c](#emission-plot-fig.-1c)
 
-## Emission plot
+## Emission plot Fig. 1c
 
 ``` r
 files<-dir('data/spectra/emission', full.names = TRUE)
@@ -15,7 +16,9 @@ for(i in seq_along(files)[-1]){
   spectra.tmp$sample <- i
   spectra <- rbind(spectra, spectra.tmp)
 }
+```
 
+``` r
 spectra$fluor <- NA
 
 spectra$fluor[spectra$sample %in% seq(9,17)] <- 594
@@ -114,7 +117,7 @@ for (sample_name in unique_samples) {
 axis(1, at=seq(300,800,by=50))
 ```
 
-![](figure01_files/figure-commonmark/unnamed-chunk-1-1.png)
+![](figure01_files/figure-commonmark/unnamed-chunk-2-1.png)
 
 Save the plot.
 

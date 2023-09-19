@@ -1,10 +1,11 @@
 ---
 title: "figure01"
+author: "Daniel Fürth <br><br>Table of Contents:"
 format: gfm
 toc: true
 ---
 
-## Emission plot
+## Emission plot Fig. 1c
 
 ```{r}
 files<-dir('data/spectra/emission', full.names = TRUE)
@@ -17,7 +18,9 @@ for(i in seq_along(files)[-1]){
   spectra.tmp$sample <- i
   spectra <- rbind(spectra, spectra.tmp)
 }
+```
 
+```{r}
 spectra$fluor <- NA
 
 spectra$fluor[spectra$sample %in% seq(9,17)] <- 594
