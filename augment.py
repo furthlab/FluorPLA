@@ -2,19 +2,19 @@ import os
 import cv2
 
 # Set the paths for the input folders
-mask_org_folder = "./training_data/masks_nuclei"
-images_org_folder = "./training_data/images_nuclei"
+mask_org_folder = "./training_data/masks_cytosol"
+images_org_folder = "./training_data/images_cytosol"
 
 # Set the paths for the output folders
-mask_folder = "./training_data/dapi/masks"
-images_folder = "./training_data/dapi/images"
+mask_folder = "./training_data/cytosol/masks"
+images_folder = "./training_data/cytosol/images"
 
 # Create the output folders if they don't exist
 os.makedirs(mask_folder, exist_ok=True)
 os.makedirs(images_folder, exist_ok=True)
 
 # Set the ROI size and step
-roi_size = (512, 512)
+roi_size = (256, 256)
 roi_step = 128
 
 # Get the list of file names in the mask_org folder

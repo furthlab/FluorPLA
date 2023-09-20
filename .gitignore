@@ -26,6 +26,9 @@
 /training_data/dapi/images/*.tif
 /training_data/dapi/masks/*.tif
 
+/training_data/cytosol/images/*.tif
+/training_data/cytosol/masks/*.tif
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf

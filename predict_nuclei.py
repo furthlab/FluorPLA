@@ -13,9 +13,6 @@ from csbdeep.io import save_tiff_imagej_compatible
 from stardist import random_label_cmap, _draw_polygons, export_imagej_rois
 from stardist.models import StarDist2D
 
-np.random.seed(6)
-lbl_cmap = random_label_cmap()
-
 X = sorted(glob('./training_data/images_nuclei/*.tif'))
 X = list(map(imread,X))
 
