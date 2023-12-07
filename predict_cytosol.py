@@ -2,7 +2,7 @@
 from keras.models import load_model
 from tensorflow.keras.metrics import MeanIoU
 
-model = load_model("tutorial118_mitochondria_100epochs.hdf5", compile=False)
+model = load_model("cytosol_unet_400epochs.hdf5", compile=False)
 
 import tensorflow as tf
 import datetime
@@ -98,7 +98,7 @@ cv2.destroyAllWindows()  # Add this to close all OpenCV windows when you're done
 
 
 # Assuming you have an OpenCV Mat called 'image_mat' that you want to save as a tiled TIFF
-output_file_path = "output.tiff"  # Specify the path where you want to save the tiled TIFF
+output_file_path = "output2.tiff"  # Specify the path where you want to save the tiled TIFF
 
 
 success = cv2.imwrite(output_file_path, monochrome_mat)

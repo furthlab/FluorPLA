@@ -4,7 +4,7 @@ Daniel Fürth <br><br>Table of Contents:
 - [Create a table of raw data files](#create-a-table-of-raw-data-files)
 - [Import the data](#import-the-data)
 - [Make a master data frame with all
-  data.](#make-a-master-data-frame-with-all-data.)
+  data.](#make-a-master-data-frame-with-all-data)
 - [Make a plot](#make-a-plot)
 - [Same for MS data](#same-for-ms-data)
   - [Peak-detection and annotation in
@@ -757,3 +757,9 @@ quartz.save(file="pdf/S02b_excitation.pdf", type='pdf')
 
     quartz_off_screen 
                     2 
+
+``` r
+peak.max
+```
+
+    [1] 490 496 589 592

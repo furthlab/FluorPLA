@@ -6,6 +6,8 @@ import os
 import cv2
 from PIL import Image
 import numpy as np
+import scipy.ndimage 
+#for erosion
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from keras.optimizers import Adam
@@ -42,23 +44,7 @@ masks = [cv2.imread(mask, 0) for mask in mask_names_subset]
 
 thresholded_masks = []
 
-for mask in mask_names_subset:
-    # Load the image
-    mask_image = cv2.imread(mask, 0)
-    
-    # Define the kernel (structuring element) for erosion
-    kernel_size = 3  # Adjust the size as needed
-    kernel = np.ones((kernel_size, kernel_size), dtype=np.uint8)
-
-    # Perform erosion
-    eroded_image = cv2.erode(mask_image, kernel, iterations=3)
-    
-    # Threshold the image
-    _, thresholded_mask = cv2.threshold(eroded_image, 1, 255, cv2.THRESH_BINARY)
-    
-    thresholded_masks.append(thresholded_mask)
-
-mask_dataset = np.array(thresholded_masks)
+mask_dataset = np.array(masks)
 mask_dataset = np.expand_dims(mask_dataset, axis = 3)
      
 print("Image data shape is: ", image_dataset.shape)
@@ -73,7 +59,7 @@ mask_dataset = mask_dataset /255.  #PIxel values will be 0 or 1
      
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(image_dataset, mask_dataset, test_size = 0.20, random_state = 42)
-     
+
 # Building Unet by dividing encoder and decoder into blocks
 
 from keras.models import Model
@@ -151,11 +137,11 @@ log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
 history = model.fit(X_train, y_train, 
-                    batch_size = 8, 
+                    batch_size = 16, 
                     verbose=1, 
-                    epochs=100, 
+                    epochs=400, 
                     validation_data=(X_test, y_test), 
                     callbacks=[tensorboard_callback],
                     shuffle=False)
                     
-model.save('tutorial118_mitochondria_100epochs.hdf5')
+model.save('cytosol_unet_400epochs.hdf5')

@@ -23,11 +23,13 @@
 # RStudio files
 .Rproj.user/
 
+/figure01
 /training_data/dapi/images/*.tif
 /training_data/dapi/masks/*.tif
 
 /training_data/cytosol/images/*.tif
 /training_data/cytosol/masks/*.tif
+/training_data/cytosol/weight_maps/*.tif
 
 # produced vignettes
 vignettes/*.html

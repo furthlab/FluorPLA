@@ -99,6 +99,7 @@ for (sample_name in unique_samples) {
 
 axis(1, at=seq(300,800,by=50))
 
+peak.max
 ```
 
 Save the plot.

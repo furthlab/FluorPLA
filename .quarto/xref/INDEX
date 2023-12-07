@@ -5,5 +5,12 @@
   "supplementary_fig02.qmd": {
     "supplementary_fig02.html": "54dbd63a",
     "supplementary_fig02.md": "693ec055"
+  },
+  "presentations/20230915/index.qmd": {
+    "index.html": "f1b442c2"
+  },
+  "figure01.qmd": {
+    "figure01.html": "9560ce1b",
+    "figure01.md": "0453fe3b"
   }
 }

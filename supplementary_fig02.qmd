@@ -453,6 +453,7 @@ for (sample_name in unique_samples) {
   # Add a legend for sample names
   legend("topright", legend = unique_samples, fill = color)
 }
+
 ```
 
 Change colors and make a figure with correct dimensions to fit in the larger figure layout:
@@ -500,4 +501,6 @@ axis(1)
 axis(2, las=1, at=c(0,0.5,1))
 
 quartz.save(file="pdf/S02b_excitation.pdf", type='pdf')
+
+peak.max
 ``` 
