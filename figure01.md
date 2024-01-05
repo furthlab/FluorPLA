@@ -1,9 +1,9 @@
 # figure01
 Daniel Fürth <br><br>Table of Contents:
 
-- [Emission plot Fig. 1c](#emission-plot-fig.-1c)
+- [Emission plot Fig. 1c](#emission-plot-fig-1c)
 - [DAPI nuclei cell segmentation in
-  2D.](#dapi-nuclei-cell-segmentation-in-2d.)
+  2D.](#dapi-nuclei-cell-segmentation-in-2d)
   - [Installation](#installation)
   - [Segmentation training](#segmentation-training)
   - [Prediction](#prediction)
@@ -124,6 +124,12 @@ axis(1, at=seq(300,800,by=50))
 
 ![](figure01_files/figure-commonmark/unnamed-chunk-2-1.png)
 
+``` r
+peak.max
+```
+
+    [1] 517 515 613 613
+
 Save the plot.
 
 ``` r
@@ -157,6 +163,42 @@ round(AZdye594, 2)
 ```
 
     [1] 2.88
+
+``` r
+print(488)
+```
+
+    [1] 488
+
+``` r
+quench.ratio$`max(emission)`[1]
+```
+
+    [1] 0.9991601
+
+``` r
+quench.ratio$`max(emission)`[2]
+```
+
+    [1] 0.174122
+
+``` r
+print(594)
+```
+
+    [1] 594
+
+``` r
+quench.ratio$`max(emission)`[3]
+```
+
+    [1] 0.9991601
+
+``` r
+quench.ratio$`max(emission)`[4]
+```
+
+    [1] 0.3466485
 
 ## DAPI nuclei cell segmentation in 2D.
 
@@ -213,36 +255,18 @@ Open up tensorboard to follow the results:
 tensorboard --logdir=.
 ```
 
-![Tensorboard lets you monitor the training of the neural
-network](./repo_img/tensorboard.png)
+<figure>
+<img src="./repo_img/tensorboard.png"
+alt="Tensorboard lets you monitor the training of the neural network" />
+<figcaption aria-hidden="true">Tensorboard lets you monitor the training
+of the neural network</figcaption>
+</figure>
 
 Click the **images** tab of the Tensorboard to inspect the visual output
 of the training.
 
-<div id="fig-training">
-
-<table style="width:50%;">
-<colgroup>
-<col style="width: 50%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><div width="50.0%"
-data-layout-align="center">
-<p><img src="./repo_img/tensorboard_img.png" id="fig-begin"
-style="width:40.0%" alt="begin" /> <img
-src="./repo_img/tensorboard_later.png" id="fig-later"
-style="width:40.0%" alt="later" /></p>
-</div></td>
-</tr>
-</tbody>
-</table>
-
-Figure 1: Training monitoring. Left is in the beginning right is later
-during training. Top row is input, middle is output of network and
-bottom is the reference (what the network should aim for).
-
-</div>
+<img src="./repo_img/tensorboard_img.png" id="fig-begin"
+style="width:40.0%" alt="begin" />
 
 In detail:
 
@@ -260,31 +284,6 @@ We have a script we can apply to any image for prediction.
 python predict_nuclei.py 
 ```
 
-<div id="fig-dapi">
+<img src="./repo_img/example_image.jpg" data-ref-parent="fig-dapi" />
 
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><div width="50.0%"
-data-layout-align="center">
-<p><img src="./repo_img/example_image.jpg" id="fig-input"
-data-ref-parent="fig-dapi" data-fig.extended="false"
-alt="(a) input" /></p>
-</div></td>
-<td style="text-align: center;"><div width="50.0%"
-data-layout-align="center">
-<p><img src="./repo_img/example_labels.jpg" id="fig-output"
-data-ref-parent="fig-dapi" data-fig.extended="false"
-alt="(b) output" /></p>
-</div></td>
-</tr>
-</tbody>
-</table>
-
-Figure 2: Segmentation results.
-
-</div>
+<img src="./repo_img/example_labels.jpg" data-ref-parent="fig-dapi" />
